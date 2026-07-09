@@ -7,6 +7,7 @@ import Brands from "@/components/Brands";
 import Gallery from "@/components/Gallery";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import FloatingButtons from "@/components/FloatingButtons";
 
 
 
@@ -23,6 +24,7 @@ export default function Home() {
       <Gallery />
       <Contact />
       <Footer />
+      <FloatingButtons />
     </>
   );
 }
