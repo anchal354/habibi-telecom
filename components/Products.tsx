@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import ProductModal from "./ProductModal";
 
+import ProductModal from "./ProductModal";
+import FadeUp from "./animations/FadeUp";
+import ZoomIn from "./animations/ZoomIn";
 
 const products = [
   {
@@ -81,69 +83,81 @@ const products = [
 ];
 
 export default function Products() {
-   const [selectedProduct, setSelectedProduct] = useState<any>(null);
- return (
-  <>
-    <section
-      id="products"
-      className="bg-gradient-to-b from-black via-zinc-950 to-black text-white py-24 px-6"
-    >
-      <div className="max-w-7xl mx-auto">
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
-        <div className="text-center mb-14">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            Our <span className="text-yellow-500">Products</span>
-          </h2>
+  return (
+    <>
+      <section
+        id="products"
+        className="bg-gradient-to-b from-black via-zinc-950 to-black py-24 px-6 text-white"
+      >
+        <div className="mx-auto max-w-7xl">
 
-          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
-            Discover a wide range of premium telecom, mobile, and electrical
-            products available at Habibi Telecom & Electrical.
-          </p>
-        </div>
+          <FadeUp>
+            <div className="mb-16 text-center">
+              <span className="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-5 py-2 text-sm uppercase tracking-[3px] text-yellow-400">
+                Our Collection
+              </span>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((item, index) => (
-            <div
-              key={index}
-              className="group overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 transition-all duration-300 hover:-translate-y-2 hover:border-yellow-500 hover:shadow-2xl hover:shadow-yellow-500/10"
-            >
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
+              <h2 className="mt-6 text-4xl font-bold md:text-5xl">
+                Our <span className="text-yellow-500">Products</span>
+              </h2>
 
-              <div className="p-6">
-                <h3 className="mb-3 text-2xl font-bold text-yellow-400">
-                  {item.title}
-                </h3>
-
-                <p className="text-sm leading-6 text-gray-400">
-                  {item.description}
-                </p>
-
-                <button
-                  onClick={() => setSelectedProduct(item)}
-                  className="mt-6 rounded-full bg-yellow-500 px-6 py-3 font-semibold text-black transition hover:bg-yellow-400"
-                >
-                  View Collection →
-                </button>
-              </div>
+              <p className="mx-auto mt-5 max-w-2xl text-gray-400">
+                Discover a wide range of premium telecom, mobile and electrical
+                products available at Habibi Telecom & Electrical.
+              </p>
             </div>
-          ))}
+          </FadeUp>
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((item, index) => (
+              <ZoomIn key={index} delay={index * 0.1}>
+                <div className="group overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 transition-all duration-500 hover:-translate-y-3 hover:border-yellow-500 hover:shadow-2xl hover:shadow-yellow-500/20">
+
+                  <div className="relative h-64 overflow-hidden">
+
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100"></div>
+
+                  </div>
+
+                  <div className="p-6">
+
+                    <h3 className="mb-3 text-2xl font-bold transition-colors duration-300 group-hover:text-yellow-400">
+                      {item.title}
+                    </h3>
+
+                    <p className="leading-7 text-gray-400">
+                      {item.description}
+                    </p>
+
+                    <button
+                      onClick={() => setSelectedProduct(item)}
+                      className="mt-8 rounded-full bg-yellow-500 px-6 py-3 font-semibold text-black transition-all duration-300 hover:scale-105 hover:bg-yellow-400"
+                    >
+                      View Collection →
+                    </button>
+
+                  </div>
+
+                </div>
+              </ZoomIn>
+            ))}
+          </div>
         </div>
+      </section>
 
-      </div>
-    </section>
-
-    <ProductModal
-      product={selectedProduct}
-      onClose={() => setSelectedProduct(null)}
-    />
-  </>
-);
+      <ProductModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
+    </>
+  );
 }
-

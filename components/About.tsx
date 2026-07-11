@@ -1,128 +1,173 @@
+"use client";
+
 import Image from "next/image";
-import { Phone, ShieldCheck, BadgeCheck, Star } from "lucide-react";
+import {
+  Phone,
+  ShieldCheck,
+  BadgeCheck,
+  Star,
+} from "lucide-react";
+
+import FadeLeft from "@/components/animations/FadeLeft";
+import FadeRight from "@/components/animations/FadeRight";
+import FadeUp from "@/components/animations/FadeUp";
+import HoverCard from "@/components/animations/HoverCard";
+import MagneticButton from "@/components/animations/MagneticButton";
 
 export default function About() {
   return (
     <section
       id="about"
-      className="bg-gradient-to-b from-black via-[#111111] to-black text-white py-24 px-6"
+      className="bg-gradient-to-b from-black via-[#111111] to-black py-24 px-6 text-white"
     >
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2">
 
         {/* Left Image */}
-        <div className="relative group">
 
-          <div className="absolute -inset-2 rounded-3xl bg-yellow-500/20 blur-xl opacity-0 group-hover:opacity-100 transition duration-500"></div>
+        <FadeLeft>
+          <div className="group relative">
 
-          <div className="relative overflow-hidden rounded-3xl border border-yellow-500/20">
+            <div className="absolute -inset-2 rounded-3xl bg-yellow-500/20 blur-xl opacity-0 transition duration-500 group-hover:opacity-100" />
 
-            <Image
-              src="/images/shop.jpg"
-              alt="Habibi Telecom Shop"
-              width={700}
-              height={700}
-              className="w-full h-[550px] object-cover transition duration-700 group-hover:scale-105"
-            />
+            <div className="relative overflow-hidden rounded-3xl border border-yellow-500/20">
+
+              <Image
+                src="/images/shop.jpg"
+                alt="Habibi Telecom Shop"
+                width={700}
+                height={700}
+                className="h-[550px] w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+
+            </div>
 
           </div>
-
-        </div>
+        </FadeLeft>
 
         {/* Right Content */}
-        <div>
 
-          <span className="inline-block px-5 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 uppercase tracking-[3px] text-sm">
+        <FadeRight>
+
+          <span className="inline-block rounded-full border border-yellow-500/30 bg-yellow-500/10 px-5 py-2 text-sm uppercase tracking-[3px] text-yellow-400">
             About Habibi
           </span>
 
-          <h2 className="text-4xl md:text-5xl font-bold mt-6 leading-tight">
-            Your Trusted
-            <span className="text-yellow-400">
-              {" "}Telecom & Electrical{" "}
-            </span>
-            Partner
-          </h2>
+          <FadeUp delay={0.1}>
+            <h2 className="mt-6 text-4xl font-bold leading-tight md:text-5xl">
+              Your Trusted
+              <span className="text-yellow-400">
+                {" "}Telecom & Electrical{" "}
+              </span>
+              Partner
+            </h2>
+          </FadeUp>
 
-          <p className="mt-8 text-gray-300 leading-8 text-lg">
-            Habibi Telecom & Electrical is your trusted destination for
-            Mobile Phones, Accessories, Smart Watches, Home Appliances,
-            Electrical Products, CCTV Cameras, Inverters, Fans, Coolers,
-            LED Lights and much more.
-          </p>
+          <FadeUp delay={0.2}>
+            <p className="mt-8 text-lg leading-8 text-gray-300">
+              Habibi Telecom & Electrical is your trusted destination
+              for Mobile Phones, Accessories, Smart Watches,
+              Home Appliances, Electrical Products,
+              CCTV Cameras, Inverters, Fans,
+              Coolers, LED Lights and much more.
+            </p>
+          </FadeUp>
 
-          <p className="mt-5 text-gray-400 leading-8">
-            We focus on genuine products, affordable pricing, trusted
-            brands and excellent customer service to ensure every customer
-            leaves satisfied.
-          </p>
+          <FadeUp delay={0.3}>
+            <p className="mt-5 leading-8 text-gray-400">
+              We focus on genuine products,
+              affordable pricing,
+              trusted brands and excellent customer service
+              to ensure every customer leaves satisfied.
+            </p>
+          </FadeUp>
 
           {/* Features */}
 
-          <div className="grid sm:grid-cols-2 gap-5 mt-10">
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
 
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="text-yellow-400" />
-              <span>100% Genuine Products</span>
-            </div>
+            <FadeUp delay={0.4}>
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="text-yellow-400" />
+                <span>100% Genuine Products</span>
+              </div>
+            </FadeUp>
 
-            <div className="flex items-center gap-3">
-              <BadgeCheck className="text-yellow-400" />
-              <span>Trusted Brands</span>
-            </div>
+            <FadeUp delay={0.45}>
+              <div className="flex items-center gap-3">
+                <BadgeCheck className="text-yellow-400" />
+                <span>Trusted Brands</span>
+              </div>
+            </FadeUp>
 
-            <div className="flex items-center gap-3">
-              <Star className="text-yellow-400" />
-              <span>Affordable Prices</span>
-            </div>
+            <FadeUp delay={0.5}>
+              <div className="flex items-center gap-3">
+                <Star className="text-yellow-400" />
+                <span>Affordable Prices</span>
+              </div>
+            </FadeUp>
 
-            <div className="flex items-center gap-3">
-              <Phone className="text-yellow-400" />
-              <span>Friendly Customer Support</span>
-            </div>
+            <FadeUp delay={0.55}>
+              <div className="flex items-center gap-3">
+                <Phone className="text-yellow-400" />
+                <span>Friendly Customer Support</span>
+              </div>
+            </FadeUp>
 
           </div>
 
           {/* Stats */}
 
-          <div className="grid grid-cols-2 gap-6 mt-12">
+          <div className="mt-12 grid grid-cols-2 gap-6">
 
-            <div className="rounded-2xl border border-yellow-500/20 bg-zinc-900 p-6 text-center hover:border-yellow-500 transition">
+            <HoverCard>
+              <div className="rounded-2xl border border-yellow-500/20 bg-zinc-900 p-6 text-center transition hover:border-yellow-500">
 
-              <h3 className="text-4xl font-bold text-yellow-400">
-                5000+
-              </h3>
+                <h3 className="text-4xl font-bold text-yellow-400">
+                  5000+
+                </h3>
 
-              <p className="mt-2 text-gray-300">
-                Happy Customers
-              </p>
+                <p className="mt-2 text-gray-300">
+                  Happy Customers
+                </p>
 
-            </div>
+              </div>
+            </HoverCard>
 
-            <div className="rounded-2xl border border-yellow-500/20 bg-zinc-900 p-6 text-center hover:border-yellow-500 transition">
+            <HoverCard>
+              <div className="rounded-2xl border border-yellow-500/20 bg-zinc-900 p-6 text-center transition hover:border-yellow-500">
 
-              <h3 className="text-4xl font-bold text-yellow-400">
-                1000+
-              </h3>
+                <h3 className="text-4xl font-bold text-yellow-400">
+                  1000+
+                </h3>
 
-              <p className="mt-2 text-gray-300">
-                Products Available
-              </p>
+                <p className="mt-2 text-gray-300">
+                  Products Available
+                </p>
 
-            </div>
+              </div>
+            </HoverCard>
 
           </div>
 
           {/* Button */}
 
-          <a
-            href="tel:+919576822786"
-            className="inline-flex items-center gap-3 mt-10 rounded-full bg-yellow-500 px-8 py-4 font-bold text-black hover:bg-yellow-400 transition"
-          >
-            <Phone size={20} />
-            Call Now
-          </a>
+          <div className="mt-10">
 
-        </div>
+            <MagneticButton>
+
+              <a
+                href="tel:+919576822786"
+                className="inline-flex items-center gap-3 rounded-full bg-yellow-500 px-8 py-4 font-bold text-black transition hover:bg-yellow-400"
+              >
+                <Phone size={20} />
+                Call Now
+              </a>
+
+            </MagneticButton>
+
+          </div>
+
+        </FadeRight>
 
       </div>
     </section>

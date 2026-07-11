@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Smartphone,
   Headphones,
@@ -8,6 +10,9 @@ import {
   ShieldCheck,
   Zap,
 } from "lucide-react";
+
+import FadeUp from "./animations/FadeUp";
+import ZoomIn from "./animations/ZoomIn";
 
 const brands = [
   {
@@ -64,50 +69,61 @@ export default function Brands() {
   return (
     <section
       id="brands"
-      className="bg-gradient-to-b from-black via-[#111111] to-black text-white py-24 px-6"
+      className="bg-gradient-to-b from-black via-[#111111] to-black py-24 px-6 text-white"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
 
-        <div className="text-center mb-14">
+        {/* Heading */}
 
-          <span className="inline-block px-5 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 uppercase tracking-[3px] text-sm">
-            Top Brands
-          </span>
+        <FadeUp>
+          <div className="mb-16 text-center">
 
-          <h2 className="text-4xl md:text-5xl font-bold mt-6">
-            Trusted <span className="text-yellow-400">Brands</span>
-          </h2>
+            <span className="inline-block rounded-full border border-yellow-500/30 bg-yellow-500/10 px-5 py-2 text-sm uppercase tracking-[3px] text-yellow-400">
+              Top Brands
+            </span>
 
-          <p className="text-gray-400 mt-5 max-w-2xl mx-auto">
-            We offer genuine products from India's most trusted
-            mobile, electronics and electrical brands.
-          </p>
+            <h2 className="mt-6 text-4xl font-bold md:text-5xl">
+              Trusted <span className="text-yellow-400">Brands</span>
+            </h2>
 
-        </div>
+            <p className="mx-auto mt-5 max-w-2xl text-gray-400">
+              We offer genuine products from India's most trusted
+              mobile, electronics and electrical brands.
+            </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          </div>
+        </FadeUp>
+
+        {/* Brand Cards */}
+
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
 
           {brands.map((brand, index) => {
             const Icon = brand.icon;
 
             return (
-              <div
-                key={index}
-                className="group rounded-2xl border border-yellow-500/10 bg-zinc-900 p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-500/10"
-              >
-                <Icon
-                  size={42}
-                  className="mx-auto text-yellow-400 transition-transform duration-300 group-hover:scale-110"
-                />
+              <ZoomIn key={index} delay={index * 0.05}>
+                <div className="group cursor-pointer rounded-3xl border border-yellow-500/10 bg-zinc-900 p-8 text-center transition-all duration-500 hover:-translate-y-4 hover:scale-[1.03] hover:border-yellow-500 hover:shadow-[0_0_40px_rgba(234,179,8,0.25)]">
 
-                <h3 className="mt-5 text-2xl font-bold">
-                  {brand.name}
-                </h3>
+                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-yellow-500/10 transition-all duration-500 group-hover:bg-yellow-500">
 
-                <p className="mt-2 text-sm text-gray-400">
-                  Authorized Brand
-                </p>
-              </div>
+                    <Icon
+                      size={40}
+                      className="text-yellow-400 transition-all duration-500 group-hover:scale-125 group-hover:text-black"
+                    />
+
+                  </div>
+
+                  <h3 className="mt-6 text-2xl font-bold transition-colors duration-300 group-hover:text-yellow-400">
+                    {brand.name}
+                  </h3>
+
+                  <p className="mt-2 text-sm text-gray-400">
+                    Authorized Brand
+                  </p>
+
+                </div>
+              </ZoomIn>
             );
           })}
 

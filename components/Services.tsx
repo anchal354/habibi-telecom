@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 "use client";
 
@@ -11,7 +12,10 @@ import {
   Truck,
 } from "lucide-react";
 
+import FadeUp from "./animations/FadeUp";
+import ZoomIn from "./animations/ZoomIn";
 import ServiceModal from "./ServiceModal";
+
 const services = [
   {
     icon: Smartphone,
@@ -89,55 +93,68 @@ const services = [
 
 export default function Services() {
   const [selectedService, setSelectedService] = useState<any>(null);
+
   return (
     <>
-    <section
-      id="services"
-      className="bg-[#0d0d0d] py-20 px-6 text-white"
-    >
-      <div className="max-w-7xl mx-auto">
+      <section
+        id="services"
+        className="bg-[#0d0d0d] py-20 px-6 text-white"
+      >
+        <div className="max-w-7xl mx-auto">
 
-        <h2 className="text-4xl font-bold text-center">
-          Our <span className="text-yellow-500">Services</span>
-        </h2>
+          <FadeUp>
+            <h2 className="text-center text-4xl font-bold">
+              Our <span className="text-yellow-500">Services</span>
+            </h2>
 
-        <p className="text-center text-gray-400 mt-4 mb-14">
-          We provide premium telecom and electrical solutions with trusted customer service.
-        </p>
+            <p className="mt-4 mb-14 text-center text-gray-400">
+              We provide premium telecom and electrical solutions with trusted
+              customer service.
+            </p>
+          </FadeUp>
 
-        <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid gap-8 md:grid-cols-3">
 
-          {services.map((service, index) => {
-  const Icon = service.icon;
+            {services.map((service, index) => {
+              const Icon = service.icon;
 
-  return (
-    <div
-      key={index}
-      onClick={() => setSelectedService(service)}
-      className="cursor-pointer bg-zinc-900 border border-zinc-800 rounded-2xl p-8 hover:border-yellow-500 transition-all duration-300 hover:-translate-y-2"
-    >
-                <div className="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center mb-6">
-                  <Icon size={32} className="text-black" />
-                </div>
+              return (
+                <ZoomIn key={index} delay={index * 0.1}>
+                  <div
+                    onClick={() => setSelectedService(service)}
+                    className="group cursor-pointer rounded-2xl border border-zinc-800 bg-zinc-900 p-8 transition-all duration-500 hover:-translate-y-3 hover:border-yellow-500 hover:shadow-2xl hover:shadow-yellow-500/20"
+                  >
+                    <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6">
+                      <Icon
+                        size={32}
+                        className="text-black transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
 
-                <h3 className="text-2xl font-semibold mb-4">
-                  {service.title}
-                </h3>
+                    <h3 className="mb-4 text-2xl font-semibold transition-colors duration-300 group-hover:text-yellow-400">
+                      {service.title}
+                    </h3>
 
-                <p className="text-gray-400 leading-7">
-                  {service.desc}
-                </p>
-              </div>
-            );
-          })}
+                    <p className="leading-7 text-gray-400">
+                      {service.desc}
+                    </p>
 
+                    <div className="mt-6 flex items-center text-sm font-semibold text-yellow-400 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
+                      Click to Know More →
+                    </div>
+                  </div>
+                </ZoomIn>
+              );
+            })}
+
+          </div>
         </div>
-      </div>
-    </section>
-    <ServiceModal
-  service={selectedService}
-  onClose={() => setSelectedService(null)}
-/>
-</>
+      </section>
+
+      <ServiceModal
+        service={selectedService}
+        onClose={() => setSelectedService(null)}
+      />
+    </>
   );
 }
