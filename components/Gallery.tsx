@@ -1,11 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+
 import FadeUp from "./animations/FadeUp";
 import ZoomIn from "./animations/ZoomIn";
 
-const gallery = [
+const galleryImages = [
   "/images/shop.jpg",
   "/images/DSC09040-01.jpeg",
   "/images/DSC09042-01.jpeg",
@@ -25,21 +28,42 @@ const gallery = [
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImage === null) return;
+    setIsMounted(true);
+  }, []);
 
-      if (e.key === "Escape") {
+  useEffect(() => {
+    if (selectedImage === null) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
         setSelectedImage(null);
       }
 
-      if (e.key === "ArrowRight") {
-        nextImage();
+      if (event.key === "ArrowRight") {
+        setSelectedImage((currentImage) => {
+          if (currentImage === null) return null;
+
+          return (currentImage + 1) % galleryImages.length;
+        });
       }
 
-      if (e.key === "ArrowLeft") {
-        prevImage();
+      if (event.key === "ArrowLeft") {
+        setSelectedImage((currentImage) => {
+          if (currentImage === null) return null;
+
+          return (
+            (currentImage - 1 + galleryImages.length) %
+            galleryImages.length
+          );
+        });
       }
     };
 
@@ -47,135 +71,169 @@ export default function Gallery() {
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
     };
   }, [selectedImage]);
 
-  const nextImage = () => {
-    if (selectedImage === null) return;
-    setSelectedImage((selectedImage + 1) % gallery.length);
+  const closeLightbox = () => {
+    setSelectedImage(null);
   };
 
-  const prevImage = () => {
-    if (selectedImage === null) return;
-    setSelectedImage((selectedImage - 1 + gallery.length) % gallery.length);
+  const showPreviousImage = () => {
+    setSelectedImage((currentImage) => {
+      if (currentImage === null) return null;
+
+      return (
+        (currentImage - 1 + galleryImages.length) %
+        galleryImages.length
+      );
+    });
   };
 
-  return (
-    
-      <section
-        id="gallery"
-        className="bg-gradient-to-b from-black via-[#111111] to-black text-white py-24 px-6"
+  const showNextImage = () => {
+    setSelectedImage((currentImage) => {
+      if (currentImage === null) return null;
+
+      return (currentImage + 1) % galleryImages.length;
+    });
+  };
+
+  const lightbox =
+    isMounted &&
+    selectedImage !== null &&
+    createPortal(
+      <div
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 px-4 py-6 backdrop-blur-md"
+        onClick={closeLightbox}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Gallery image viewer"
       >
-        <div className="max-w-7xl mx-auto">
+        {/* Close Button */}
 
-       <FadeUp>
-  <div className="mb-14 text-center">
-    <span className="inline-block rounded-full border border-yellow-500/30 bg-yellow-500/10 px-5 py-2 text-sm uppercase tracking-[3px] text-yellow-400">
-      Gallery
-    </span>
+        <button
+          type="button"
+          onClick={closeLightbox}
+          className="absolute right-4 top-4 z-30 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white transition hover:border-yellow-500 hover:bg-yellow-500 hover:text-black sm:right-8 sm:top-8"
+          aria-label="Close image"
+        >
+          <X size={26} />
+        </button>
 
-    <h2 className="mt-6 text-4xl font-bold md:text-5xl">
-      Our <span className="text-yellow-400">Showroom</span>
-    </h2>
+        {/* Previous Button */}
 
-    <p className="mx-auto mt-5 max-w-2xl text-gray-400">
-      Explore our showroom and premium collection of mobiles,
-      accessories, electrical products and home appliances.
-    </p>
-  </div>
-</FadeUp>
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            showPreviousImage();
+          }}
+          className="absolute left-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white transition hover:border-yellow-500 hover:bg-yellow-500 hover:text-black sm:left-8"
+          aria-label="Previous image"
+        >
+          <ChevronLeft size={30} />
+        </button>
 
-         {gallery.map((image, index) => (
-  <ZoomIn key={index} delay={index * 0.05}>
-    <div
-      onClick={() => setSelectedImage(index)}
-className="group cursor-pointer overflow-hidden rounded-3xl border border-yellow-500/10 bg-zinc-900 transition-all duration-500 hover:-translate-y-4 hover:scale-[1.02] hover:border-yellow-500 hover:shadow-[0_0_40px_rgba(234,179,8,0.25)]"    >
-      <div className="relative h-72 overflow-hidden">
+        {/* Image */}
 
-        <Image
-          src={image}
-          alt={`Gallery ${index + 1}`}
-          fill
-          className="object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:rotate-[0.5deg]"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100"></div>
-
-      </div>
-    </div>
-  </ZoomIn>
-))}
-
+        <div
+          className="relative h-[75vh] w-full max-w-6xl overflow-hidden rounded-2xl"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <Image
+            src={galleryImages[selectedImage]}
+            alt={`Habibi Telecom gallery image ${selectedImage + 1}`}
+            fill
+            sizes="100vw"
+            priority
+            className="object-contain"
+          />
         </div>
 
-      </div>
+        {/* Next Button */}
 
-     {/* Lightbox */}
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            showNextImage();
+          }}
+          className="absolute right-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white transition hover:border-yellow-500 hover:bg-yellow-500 hover:text-black sm:right-8"
+          aria-label="Next image"
+        >
+          <ChevronRight size={30} />
+        </button>
 
-{selectedImage !== null && (
-  <ZoomIn>
-  <div
-    onClick={() => setSelectedImage(null)}
-    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md"
-  >
-    {/* Close Button */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        setSelectedImage(null);
-      }}
-      className="absolute top-6 right-6 rounded-full border border-yellow-500/30 bg-black/60 p-3 text-white backdrop-blur transition hover:bg-yellow-500 hover:text-black"
-    >
-      <X size={28} />
-    </button>
+        {/* Image Counter */}
 
-    {/* Previous Button */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        prevImage();
-      }}
-      className="absolute left-6 top-1/2 -translate-y-1/2 rounded-full border border-yellow-500/30 bg-black/60 p-3 text-white backdrop-blur transition hover:bg-yellow-500 hover:text-black"
-    >
-      <ChevronLeft size={36} />
-    </button>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-black/70 px-5 py-2 text-sm text-white sm:bottom-6">
+          {selectedImage + 1} / {galleryImages.length}
+        </div>
+      </div>,
+      document.body
+    );
 
-    {/* Image */}
-    <ZoomIn>
-    <div
-      onClick={(e) => e.stopPropagation()}
-      className="relative h-[80vh] w-[90vw]"
-    >
-      <Image
-        src={gallery[selectedImage]}
-        alt={`Gallery ${selectedImage + 1}`}
-        fill
-        priority
-       className="object-contain scale-95 transition-all duration-500 ease-out"
-      />
-    </div>
-    </ZoomIn>
-    {/* Counter */}
-    <div className="absolute bottom-8 rounded-full bg-black/50 px-4 py-2 text-white backdrop-blur">
-      {selectedImage + 1} / {gallery.length}
-    </div>
+  return (
+    <>
+      <section
+        id="gallery"
+        className="bg-gradient-to-b from-black via-[#111111] to-black px-6 py-24 text-white"
+      >
+        <div className="mx-auto max-w-7xl">
+          {/* Heading */}
 
-    {/* Next Button */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        nextImage();
-      }}
-      className="absolute right-6 top-1/2 -translate-y-1/2 rounded-full border border-yellow-500/30 bg-black/60 p-3 text-white backdrop-blur transition hover:bg-yellow-500 hover:text-black"
-    >
-      <ChevronRight size={36} />
-    </button>
-  </div>
-  </ZoomIn>
-)}
+          <FadeUp>
+            <div className="mb-16 text-center">
+              <span className="inline-block rounded-full border border-yellow-500/30 bg-yellow-500/10 px-5 py-2 text-sm uppercase tracking-[3px] text-yellow-400">
+                Our Gallery
+              </span>
 
-    </section>
-  
+              <h2 className="mt-6 text-4xl font-bold md:text-5xl">
+                Explore Our{" "}
+                <span className="text-yellow-400">Showroom</span>
+              </h2>
+
+              <p className="mx-auto mt-5 max-w-2xl text-gray-400">
+                Take a closer look at our showroom, products and available
+                collections.
+              </p>
+            </div>
+          </FadeUp>
+
+          {/* Gallery Grid */}
+
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+            {galleryImages.map((image, index) => (
+              <ZoomIn key={image} delay={index * 0.03}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedImage(index)}
+                  className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-2xl border border-yellow-500/10 bg-zinc-900 text-left transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500 hover:shadow-[0_0_35px_rgba(234,179,8,0.2)]"
+                  aria-label={`Open gallery image ${index + 1}`}
+                >
+                  <Image
+                    src={image}
+                    alt={`Habibi Telecom showroom image ${index + 1}`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+
+                  <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/30" />
+
+                  <div className="absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-black/90 to-transparent p-5 pt-12 transition-transform duration-500 group-hover:translate-y-0">
+                    <p className="font-semibold text-yellow-400">
+                      View Image
+                    </p>
+                  </div>
+                </button>
+              </ZoomIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {lightbox}
+    </>
   );
 }
