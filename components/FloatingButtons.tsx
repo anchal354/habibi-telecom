@@ -1,46 +1,65 @@
 "use client";
 
-import { Phone, MessageCircle } from "lucide-react";
+import { MessageCircle, Phone } from "lucide-react";
 
 export default function FloatingButtons() {
   return (
     <>
-      {/* WhatsApp */}
-      <a
-        href="https://wa.me/919576822786?text=Hello%20Habibi%20Telecom%20%26%20Electrical"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-24 right-6 z-50 group"
-        aria-label="Chat on WhatsApp"
-      >
-        <div className="flex items-center gap-3 rounded-full bg-green-500 px-4 py-3 shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-green-600">
-          <MessageCircle size={26} className="text-white" />
+      {/* Mobile Bottom Buttons */}
 
-          <span className="hidden md:block font-semibold text-white whitespace-nowrap">
-            Chat on WhatsApp
-          </span>
-        </div>
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/95 px-3 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] backdrop-blur-xl md:hidden">
+        <div className="mx-auto grid max-w-md grid-cols-2 gap-3">
+          <a
+            href="https://wa.me/919576822786?text=Hello%20Habibi%20Telecom%20%26%20Electrical"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-green-500 px-3 py-3 text-[13px] font-bold text-white transition active:scale-95"
+            aria-label="Chat with Habibi Telecom on WhatsApp"
+          >
+            <MessageCircle size={19} />
+            WhatsApp
+          </a>
 
-        <span className="absolute -top-1 -right-1 flex h-4 w-4">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-300 opacity-75"></span>
-          <span className="relative inline-flex h-4 w-4 rounded-full bg-green-500"></span>
-        </span>
-      </a>
-
-      {/* Call */}
-      <a
-        href="tel:+919576822786"
-        className="fixed bottom-6 right-6 z-50"
-        aria-label="Call Now"
-      >
-        <div className="flex items-center gap-3 rounded-full bg-yellow-500 px-4 py-3 shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-yellow-400">
-          <Phone size={26} className="text-black" />
-
-          <span className="hidden md:block font-semibold text-black whitespace-nowrap">
+          <a
+            href="tel:+919576822786"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-yellow-500 px-3 py-3 text-[13px] font-bold text-black transition active:scale-95"
+            aria-label="Call Habibi Telecom"
+          >
+            <Phone size={19} />
             Call Now
-          </span>
+          </a>
         </div>
-      </a>
+      </div>
+
+      {/* Tablet and Desktop Floating Buttons */}
+
+      <div className="fixed bottom-6 right-6 z-40 hidden flex-col items-end gap-3 md:flex">
+        <a
+          href="https://wa.me/919576822786?text=Hello%20Habibi%20Telecom%20%26%20Electrical"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative flex items-center gap-3 rounded-full bg-green-500 px-5 py-3 font-semibold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-green-600"
+          aria-label="Chat with Habibi Telecom on WhatsApp"
+        >
+          <MessageCircle size={23} />
+          Chat on WhatsApp
+
+          <span className="absolute -right-1 -top-1 flex h-4 w-4">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-300 opacity-75" />
+
+            <span className="relative inline-flex h-4 w-4 rounded-full bg-green-500" />
+          </span>
+        </a>
+
+        <a
+          href="tel:+919576822786"
+          className="flex items-center gap-3 rounded-full bg-yellow-500 px-5 py-3 font-semibold text-black shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-yellow-400"
+          aria-label="Call Habibi Telecom"
+        >
+          <Phone size={23} />
+          Call Now
+        </a>
+      </div>
     </>
   );
 }
